@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool r[202] = {0, }, c[202] = {0, };
+    int n;
+    void serch(int i, int j, vector<vector<int>>& isConnected) {
+        r[i] = true;
+        c[i] = true;
+        r[j] = true;
+        c[j] = true;
+        for (int jj = 0; jj < n; jj ++) {
+            if (!c[jj] && isConnected[i][jj]) serch(i, jj, isConnected);
+        }
+        for (int ii = 0; ii < n; ii ++) {
+            if (!r[ii] && isConnected[ii][j]) serch(ii, j, isConnected);
+        }
+    }
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int ans = 0;
+        n = isConnected.size();
+        for (int i = 0; i < n; i ++) {
+            if (r[i]) continue;
+            for (int j = i + 1; j < n; j ++) {
+                if (c[j] || !isConnected[i][j]) continue;
+                ans ++;
+                serch(i, j, isConnected);
+            }
+        }
+        for (int i = 0; i < n; i ++) if (!c[i] && !r[i]) ans ++;
+        return ans;
+    }
+};

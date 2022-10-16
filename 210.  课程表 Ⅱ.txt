@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> ans, in(numCourses), h(numCourses, -1);
+        int idx = 0, hh = 0, tt = -1;
+        for (int i = 0; i < prerequisites.size(); i ++) {
+            int ne = h[prerequisites[i][1]];
+            h[prerequisites[i][1]] = i;
+            prerequisites[i][1] = ne;
+            in[prerequisites[i][0]] ++;
+        }
+        for (int i = 0; i < numCourses; i ++)
+            if (in[i] == 0) {
+                ans.push_back(i);
+                tt ++;
+            }
+        while (hh <= tt) {
+            int a = ans[hh ++];
+            for (int i = h[a]; i != -1; i = prerequisites[i][1]) {
+                int b = prerequisites[i][0];
+                in[b] --;
+                if (in[b] == 0) {
+                    ans.push_back(b);
+                    tt ++;
+                }
+            }
+        }
+        if (tt == numCourses - 1) return ans;
+        return {};
+    }
+};

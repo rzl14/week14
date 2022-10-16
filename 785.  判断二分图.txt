@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int calor[101] = {0, }, q[101], hh = 0, tt = -1;
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+        for (int i = 0; i < n; i ++) {
+            while (i < n && calor[i]) i ++;
+            if (i >= n) return true;
+            calor[i] = 1;
+            q[++ tt] = i;
+            while (hh <= tt) {
+                int a = q[hh ++], j;
+                for (int k = 0; k < graph[a].size(); k ++) {
+                    j = graph[a][k];
+                    if (calor[j] == calor[a]) return false;
+                    if (!calor[j]) {
+                        q[++ tt] = j;
+                        calor[j] = calor[a] == 1 ? 2 : 1;
+                    }
+            }
+        }
+        }
+        return true;
+    }
+};

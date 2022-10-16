@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool areAlmostEqual(string s1, string s2) {
+        bool st = true;
+        for (int i = 0, j = s1.size() - 1; i <= j; i ++, j --) {
+            while (i < j && s1[i] == s2[i]) i ++;
+            while (i < j && s1[j] == s2[j]) j --;
+            if (!st) {
+                if (i == j) return s1[i] == s2[i];
+                return false;
+            }
+            if (s1[i] != s2[j] || s1[j] != s2[i]) return false;
+            st = false;
+        }
+        return true;
+    }
+};

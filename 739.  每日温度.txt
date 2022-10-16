@@ -1,0 +1,16 @@
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        vector<int> ans(temperatures.size()), stk(temperatures.size());
+        int tt = -1;
+        for (int i = 0; i < temperatures.size(); i ++) {
+            while (tt >= 0 && temperatures[i] > temperatures[stk[tt]]) {
+                ans[stk[tt]] = i - stk[tt];
+                tt --;
+            }
+            stk[++ tt] = i;
+        }
+        while (tt >= 0) ans[stk[tt --]] = 0;
+        return ans;
+    }
+};

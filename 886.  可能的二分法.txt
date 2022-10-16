@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
+        int sz = dislikes.size(), idx = 0, hh = 0, tt = -1;
+        if (!sz) return true;
+        int h[n + 1], e[sz << 2 + 2], ne[sz << 2 + 2], q[n + 1], calor[n + 1];
+        memset(h, -1, sizeof h); memset(calor, 0, sizeof calor);
+        // vector<int> h(n + 1, -1), e(sz << 2 + 2), ne(sz << 2 + 2), q(n + 1), calor(n + 1, 0);
+        for (int i = 0; i < sz; i ++) {
+            int a = dislikes[i][0], b = dislikes[i][1];
+            e[idx] = b, ne[idx] = h[a], h[a] = idx ++;
+            e[idx] = a, ne[idx] = h[b], h[b] = idx ++;
+        }
+        for (int i = 1; i <= n; i ++) {
+            if (calor[i] != 0) continue;
+            q[++ tt] = i;
+            calor[i] = 1;
+            while (hh <= tt) {
+                int a = q[hh ++], ei;
+                for (int i = h[a]; i != -1; i = ne[i]) {
+                    ei = e[i];
+                    if (calor[ei] == calor[a]) return false;
+                    if (!calor[ei]) {
+                        calor[ei] = calor[a] == 1 ? 2 : 1;
+                        q[++ tt] = ei;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};

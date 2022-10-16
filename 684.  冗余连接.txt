@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int father[1003];
+    int find(int a) {
+        return a == father[a] ? a : father[a] = find(father[a]);
+    }
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        for (int i = 0; i < n; i ++) father[i] = i;
+        for (int i = 0; i < n; i ++) {
+            int fa = find(edges[i][1]);
+            if (fa == find(edges[i][0])) return edges[i];
+            father[fa] = edges[i][0];
+        }
+        return {0, 0};
+    }
+};
